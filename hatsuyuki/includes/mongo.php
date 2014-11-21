@@ -25,13 +25,13 @@ class BaseModel {
 
     public function update($data) {
         $this->is_array($data);
-        foreach ($data as $key=>$value) {
+        foreach ($data as $key => $value) {
             if ($key != '_id') {
                 $this->object[$key] = $value;
             }
         }
-        $this->db->update(array('_id'=>$this->object['_id']), $this->object);
-        $this->object = $this->get(array('_id'=>$this->object['_id']));
+        $this->db->update(array('_id' => $this->object['_id']), $this->object);
+        $this->object = $this->get(array('_id' => $this->object['_id']));
     }
 
     public function create($data) {
@@ -42,7 +42,7 @@ class BaseModel {
     }
 
     public function delete() {
-        $this->db->remove(array('_id'=>$this->object['_id']));
+        $this->db->remove(array('_id' => $this->object['_id']));
         $this->object = NULL;
     }
 

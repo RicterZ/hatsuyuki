@@ -4,7 +4,7 @@ include_once(__DIR__ . '/../includes/mongo.php');
 
 
 class UserModel extends BaseModel {
-    
+
     protected $collection = 'users';
     protected $fields = array('username', 'password', 'email', 'salt');
 
@@ -22,9 +22,12 @@ class UserModel extends BaseModel {
     }
 
     public function check_user($username, $password) {
-        $user = $this->db->find(array('username'=>$username));
+        $user = $this->db->findOne(array('username' => $username));
         if ($user) {
-            return $user['password'] == md5($password . $user['salt']);
+            if ($user['password'] == md5($password . $user['salt'])) {
+                $this->object = $user;
+                return true;
+            }
         }
         return false;
     }
