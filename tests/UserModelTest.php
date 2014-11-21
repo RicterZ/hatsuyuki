@@ -13,7 +13,7 @@ class UserModelTest extends PHPUnit_Framework_TestCase {
             'email'=>'ricterzheng@gmail.com'
         ));
         $this->assertEquals($user->object['username'], 'ricter');
-        $this->assertEquals($user->object['password'], '123456');
+        $this->assertEquals($user->object['password'], md5('123456' . $user->object['salt']));
         $this->assertEquals($user->object['email'], 'ricterzheng@gmail.com');
 
         return $user;
@@ -25,7 +25,7 @@ class UserModelTest extends PHPUnit_Framework_TestCase {
     public function testGetUser($user) {
         $user->get(array('_id'=>new MongoId($user->object['_id'])));
         $this->assertEquals($user->object['username'], 'ricter');
-        $this->assertEquals($user->object['password'], '123456');
+        $this->assertEquals($user->object['password'], md5('123456' . $user->object['salt']));
         $this->assertEquals($user->object['email'], 'ricterzheng@gmail.com');
 
         return $user;
@@ -35,9 +35,13 @@ class UserModelTest extends PHPUnit_Framework_TestCase {
      * @depends testGetUser
      */
     public function testUpdateUser($user) {
-        $user->update(array('username'=>'cee', '_id'=>'546ec9d241585e6c910041a1'));
+        $user->update(array(
+            'username'=>'cee',
+            '_id'=>'546ec9d241585e6c910041a1',
+            'password'=>'cee_is_j0j0'
+        ));
         $this->assertEquals($user->object['username'], 'cee');
-        $this->assertEquals($user->object['password'], '123456');
+        $this->assertEquals($user->object['password'], md5('cee_is_j0j0' . $user->object['salt']));
         $this->assertNotEquals($user->object['_id'], '546ec9d241585e6c910041a1');
 
         return $user;

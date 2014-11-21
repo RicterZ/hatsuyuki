@@ -8,6 +8,7 @@ class BaseModel {
     protected $db;
     var $object;
     protected $collection;
+    protected $fields;
 
     function __construct($data=null) {
         $mongodb = new MongoClient();
@@ -35,6 +36,7 @@ class BaseModel {
 
     public function create($data) {
         $this->is_array($data);
+        $this->check_fields($data);
         $this->db->insert($data);
         $this->object = $data;
     }
@@ -47,6 +49,14 @@ class BaseModel {
     private function is_array($data) {
         if (!is_array($data)) {
             throw new Exception('Invalid type of document');
+        }
+    }
+
+    private function check_fields($data) {
+        foreach ($this->fields as $field) {
+            if (!array_key_exists($field, $data)) {
+                throw new Exception('Invalid fields of this model');
+            }
         }
     }
 }
