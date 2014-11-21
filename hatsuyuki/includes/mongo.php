@@ -5,25 +5,48 @@ include_once('config.php');
 
 class BaseModel {
 
-    var $id;
+    protected $db;
     var $object;
-    var $collection;
+    protected $collection;
 
-    function __construct($id) {
-        $_ = new MongoClient();
-        if (!is_string($id) || !strlen($id) == 24) {
-            throw new Exception('Invalid ObjectId');
+    function __construct($data=null) {
+        $mongodb = new MongoClient();
+        $this->db = $mongodb->selectDB(DB_NAME)->selectCollection($this->collection);
+        if ($data) {
+            $this->get($data);
         }
-        $this->id = $id;
-        $this->object = $_->selectDB(DB_NAME)->__get($this->collection);
     }
 
-    function get() {
-        return json_decode($this->object->findOne(array('_id'=>$this->$id)));
+    public function get($data) {
+        $this->object = $this->db->findOne($data);
+        return $this->object;
     }
 
-    function update() {
+    public function update($data) {
+        $this->is_array($data);
+        foreach ($data as $key=>$value) {
+            if ($key != '_id') {
+                $this->object[$key] = $value;
+            }
+        }
+        $this->db->update(array('_id'=>$this->object['_id']), $this->object);
+        $this->object = $this->get(array('_id'=>new MongoId($this->object['_id'])));
+    }
 
+    public function create($data) {
+        $this->is_array($data);
+        $this->db->insert($data);
+        $this->object = $data;
+    }
+
+    public function delete() {
+        $this->db->remove($this->object);
+    }
+
+    private function is_array($data) {
+        if (!is_array($data)) {
+            throw new Exception('Invalid type of document');
+        }
     }
 }
 
