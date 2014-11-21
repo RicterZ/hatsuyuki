@@ -15,6 +15,7 @@ class UserModelTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($user->object['username'], 'ricter');
         $this->assertEquals($user->object['password'], '123456');
         $this->assertEquals($user->object['email'], 'ricterzheng@gmail.com');
+
         return $user;
     }
 
@@ -38,6 +39,16 @@ class UserModelTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($user->object['username'], 'cee');
         $this->assertEquals($user->object['password'], '123456');
         $this->assertNotEquals($user->object['_id'], '546ec9d241585e6c910041a1');
+
+        return $user;
+    }
+
+    /**
+     * @depends testUpdateUser
+     */
+    public function testRemoveUser($user) {
+        $user->delete();
+        $this->assertEquals($user->object, NULL);
     }
 
     public static function tearDownAfterClass() {

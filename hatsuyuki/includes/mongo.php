@@ -30,7 +30,7 @@ class BaseModel {
             }
         }
         $this->db->update(array('_id'=>$this->object['_id']), $this->object);
-        $this->object = $this->get(array('_id'=>new MongoId($this->object['_id'])));
+        $this->object = $this->get(array('_id'=>$this->object['_id']));
     }
 
     public function create($data) {
@@ -40,7 +40,8 @@ class BaseModel {
     }
 
     public function delete() {
-        $this->db->remove($this->object);
+        $this->db->remove(array('_id'=>$this->object['_id']));
+        $this->object = NULL;
     }
 
     private function is_array($data) {
