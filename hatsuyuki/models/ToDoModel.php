@@ -1,6 +1,6 @@
 <?php
 
-include_once(__DIR__ . '/../includes/mongo.php');
+include_once(__DIR__ . '/../includes/base.model.php');
 
 
 class ToDoModel extends BaseModel {
@@ -27,8 +27,7 @@ class ToDoModel extends BaseModel {
 
     public function get_sub_todo() {
         $sub_todo_list = array();
-        $sub_todo = $this->db->find(array('parent' => $this->object['_id']));
-        foreach ($sub_todo as $todo) {
+        foreach ($this->db->find(array('parent' => $this->object['_id'])) as $todo) {
             array_push($sub_todo_list, new ToDoModel($todo));
         }
         return $sub_todo_list;

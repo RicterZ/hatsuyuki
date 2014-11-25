@@ -5,8 +5,8 @@ include_once('config.php');
 
 class BaseModel {
 
+    public $object;
     protected $db;
-    var $object;
     protected $collection;
     protected $fields;
 
