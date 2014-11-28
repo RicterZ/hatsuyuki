@@ -33,6 +33,13 @@ class BaseView {
                 $this->request->files->$key->$innerKey = $innerValue;
             }
         }
+
+        //print_r($_SESSION);
+        if (array_key_exists('user', $_SESSION)) {
+            $this->request->user = new UserModel(unserialize($_SESSION['user']));
+        } else {
+            $this->request->user = NULL;
+        }
     }
 
     public function dispatch() {
@@ -46,7 +53,11 @@ class BaseView {
     public function get() {return NULL;}
     public function post() {return NULL;}
 
-    public function render($data) {
-        return json_encode($data);
+    public function render($tpl, $data=array()) {
+        $smarty = new Smarty();
+        $data['user'] = $this->request->user ? $this->request->user->object : NULL;
+        $data['request'] = $this->request;
+        $smarty->assign('data', $data);
+        return $smarty->fetch('./tpl/' . $tpl);
     }
 }

@@ -2,3 +2,4 @@
 hatsuyuki/composer.lock
 hatsuyuki/composer.phar
 hatsuyuki/vendor
+hatsuyuki/templates_c/*.php

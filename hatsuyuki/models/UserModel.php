@@ -1,8 +1,5 @@
 <?php
 
-include_once(__DIR__ . '/../includes/base.model.php');
-include_once(__DIR__ . '/UserModel.php');
-
 
 class UserModel extends BaseModel {
 
@@ -33,11 +30,4 @@ class UserModel extends BaseModel {
         return false;
     }
 
-    public function get_todo() {
-        $todo_list = array();
-        foreach ($this->db->find(array('owner' => new MongoId($this->object['_id']))) as $todo) {
-            array_push($todo_list, new ToDoModel($todo));
-        }
-        return $todo_list;
-    }
 }

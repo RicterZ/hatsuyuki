@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . '/../hatsuyuki/includes/config.php');
+include_once(__DIR__ . '/../hatsuyuki/includes/base.model.php');
 include_once(__DIR__ . '/../hatsuyuki/models/UserModel.php');
 include_once(__DIR__ . '/../hatsuyuki/models/ToDoModel.php');
 
@@ -27,11 +29,22 @@ class ToDoModelTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($todo->object['owner'], $user->object['_id']);
         $this->assertEquals($todo->object['status'], 0);
 
-        return $todo;
+        return $user;
     }
 
     /**
      * @depends testInsertToDo
+     */
+    public function testGetToDo($user) {
+        $todo = new ToDoModel();
+        $todo_list = $todo->get_todo($user->object['_id']);
+        $this->assertEquals(count($todo_list), 1);
+        $this->assertEquals($todo_list[0]->object['title'], 'Piapiapia with Cee');
+        return $todo_list[0];
+    }
+
+    /**
+     * @depends testGetToDo
      */
     public function testInsertSubToDo($todo) {
         $sub_todo = new ToDoModel();
@@ -59,10 +72,11 @@ class ToDoModelTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(count($nothing), 0);
 
         $sub_todo->delete();
+        return $todo;
     }
 
     /**
-     * @depends testInsertToDo
+     * @depends testInsertSubToDo
      */
     public function testUpdateToDo($todo) {
         $todo->update(array(
@@ -77,7 +91,11 @@ class ToDoModelTest extends PHPUnit_Framework_TestCase {
      * @depends testUpdateToDo
      */
     public function testDeleteToDo($todo) {
+        $user = new UserModel(array('_id' => $todo->object['owner']));
+        $user->delete();
+
         $todo->delete();
+        $this->assertEquals($todo->object, NULL);
     }
 
 } 

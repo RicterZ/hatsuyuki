@@ -1,19 +1,17 @@
 <?php
 
-include_once(__DIR__ . '/../includes/base.view.php');
-include_once(__DIR__ . '/../models/ToDoModel.php');
-include_once(__DIR__ . '/../models/UserModel.php');
-
-
 
 class IndexView extends BaseView {
 
     function get() {
-        if ($user = $this->request->session->user) {
-            $user = new UserModel(unserialize($user));
-            return json_encode($user->get_todo());
+        if ($user = $this->request->user) {
+            $data = array(
+                'title' =>  'Hatsuyuki',
+                'todo' => $user->get_todo(),
+            );
+            return $this->render('index.html', $data);
         } else {
-            return 'Welcome';
+            return $this->render('index.html', array('title' => 'Hatsuyuki'));
         }
     }
 

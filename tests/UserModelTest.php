@@ -1,6 +1,9 @@
 <?php
 
+require_once(__DIR__ . '/../hatsuyuki/includes/config.php');
+include_once(__DIR__ . '/../hatsuyuki/includes/base.model.php');
 include_once(__DIR__ . '/../hatsuyuki/models/UserModel.php');
+include_once(__DIR__ . '/../hatsuyuki/models/ToDoModel.php');
 
 
 class UserModelTest extends PHPUnit_Framework_TestCase {
@@ -66,9 +69,4 @@ class UserModelTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($user->object, NULL);
     }
 
-    public static function tearDownAfterClass() {
-        $mongodb = new MongoClient();
-        $db = $mongodb->selectDB(DB_NAME)->selectCollection('users');
-        $db->remove(array());
-    }
 }
