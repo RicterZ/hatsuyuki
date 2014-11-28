@@ -58,6 +58,6 @@ class BaseView {
         $data['user'] = $this->request->user ? $this->request->user->object : NULL;
         $data['request'] = $this->request;
         $smarty->assign('data', $data);
-        return $smarty->fetch('./tpl/' . $tpl);
+        return $smarty->fetch('./templates/' . $tpl);
     }
 }
