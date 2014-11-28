@@ -2,4 +2,7 @@
 hatsuyuki/composer.lock
 hatsuyuki/composer.phar
 hatsuyuki/vendor
-hatsuyuki/templates_c/*.php
+hatsuyuki/templates_c/
+hatsuyuki/cache/
+!hatsuyuki/templates_c/.gitkeep
+!hatsuyuki/cache/.gitkeep
