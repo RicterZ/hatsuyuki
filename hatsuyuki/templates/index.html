@@ -1,0 +1,17 @@
+{extends file="./layout.html"}
+
+{block name="body"}
+<div class="wrapper">
+    <h1>Hello World</h1>
+    {if $data.user}
+        Username: {$data.user.username}
+        <ul>
+            {foreach $data.todo as $todo}
+                <li>{$todo.title}</li>
+            {/foreach}
+        </ul>
+    {else}
+        Guest
+    {/if}
+</div>
+{/block}
