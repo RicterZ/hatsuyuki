@@ -4,7 +4,7 @@
 class RegisterView extends BaseView {
 
     public function get() {
-        return 'Please POST your email, username and password';
+        return $this->render('register.html');
     }
 
     public function post() {

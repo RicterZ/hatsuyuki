@@ -3,6 +3,7 @@
 
 class BaseView {
     protected $request;
+    protected $method;
 
     function __construct() {
         $this->request = new stdClass();
@@ -34,7 +35,6 @@ class BaseView {
             }
         }
 
-        //print_r($_SESSION);
         if (array_key_exists('user', $_SESSION)) {
             $this->request->user = new UserModel(unserialize($_SESSION['user']));
         } else {
@@ -43,11 +43,20 @@ class BaseView {
     }
 
     public function dispatch() {
-        if ($this->request->server->REQUEST_METHOD == 'GET') {
-            return function() {return $this->get();};
-        } else if ($this->request->server->REQUEST_METHOD == 'POST') {
-            return function() {return $this->post();};
+        $http_methods = array('get', 'post', 'put', 'delete', 'patch', 'head');
+        $methods = get_class_methods($this);
+
+        $this->method = strtolower($this->request->server->REQUEST_METHOD);
+        if ((!in_array($this->method, $http_methods)) || (!in_array($this->method, $methods))) {
+            return function() {
+                return new \Klein\Response('Method not allowed', 405);
+            };
+        } else {
+            return function($req=NULL, $response=NULL, $service=NULL, $app=NULL) {
+                return call_user_func_array(array($this, $this->method), array($req, $response, $service, $app));
+            };
         }
+
     }
 
     public function get() {return NULL;}

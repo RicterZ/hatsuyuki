@@ -5,9 +5,10 @@ class IndexView extends BaseView {
 
     function get() {
         if ($user = $this->request->user) {
+            $todo = new ToDoModel();
             $data = array(
                 'title' =>  'Hatsuyuki',
-                'todo' => $user->get_todo(),
+                'todo' => $todo->get_todo($user->object['_id']),
             );
             return $this->render('index.html', $data);
         } else {

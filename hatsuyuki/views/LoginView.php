@@ -4,7 +4,7 @@
 class LoginView extends BaseView {
 
     public function get() {
-        return 'Please POST ur username and password';
+        return $this->render('login.html');
     }
 
     public function post() {
