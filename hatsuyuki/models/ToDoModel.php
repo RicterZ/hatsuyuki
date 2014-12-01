@@ -14,6 +14,13 @@ class ToDoModel extends BaseModel {
 
     public function create($data) {
         $data['created_time'] = date('Y/m/d G:i');
+        if (!$data['status'] == NULL) {
+            if ($data['status'] > 2 || $data['status'] < 0) {
+                $data['status'] = 0;
+            }
+        } else {
+            $data['status'] = 0;
+        }
         if (!array_key_exists('parent', $data)) {
             $data['parent'] = NULL;
         } else {

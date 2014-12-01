@@ -2,7 +2,7 @@
 
 
 class TodoDetailView extends BaseView {
-    function get($req=NULL) {
+    public function get($req=NULL) {
         $todo = new ToDoModel(array('_id' => new MongoId($req->id)));
         if ($todo->object) {
             echo '<pre>';

@@ -9,6 +9,9 @@ class RegisterView extends BaseView {
 
     public function post() {
         $user = new UserModel();
+        if (!filter_var($this->request->post->email, FILTER_VALIDATE_EMAIL)) {
+            return 'Invalid Email';
+        }
         $user->get(array('$or' => array(
             array('username' => $this->request->post->username),
             array('email'    => $this->request->post->email),

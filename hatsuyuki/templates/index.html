@@ -2,16 +2,35 @@
 
 {block name="body"}
 <div class="wrapper">
-    <h1>Hello World</h1>
+    <h1>Hatsuyuki</h1>
     {if $data.user}
-        Username: {$data.user.username}
+        Hello, {$data.user.username}, <a href="/index.php/logout">Logout</a>
+        <h2>My Todo</h2>
         <ul>
             {foreach $data.todo as $todo}
-                <li>{$todo.title}</li>
+                <li>
+                    <div>
+                        <h3>[{$todo->status[$todo->object.status]}] {$todo->object.title}</h3>
+                        <small>Created at {$todo->object.created_time}</small>
+                        <p>{$todo->object.detail}</p>
+                    </div>
+                </li>
             {/foreach}
         </ul>
+        <h2>Create todo</h2>
+        <form method="post" action="/index.php/todo/">
+            <label for="title">Title:</label><input id="title" type="text" name="title"><br>
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+                <option value="0">Undo</option>
+                <option value="1">Doing</option>
+                <option value="2">Finished</option>
+            </select><br>
+            <label for="detail">Detail:</label><textarea id="detail" name="detail"></textarea><br>
+            <button type="submit">Submit</button>
+        </form>
     {else}
-        Guest
+        Hello, Guest, <a href="/index.php/login">Login</a> or <a href="/index.php/register">Register</a>
     {/if}
 </div>
 {/block}

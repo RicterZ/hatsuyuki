@@ -66,6 +66,7 @@ class BaseView {
         $smarty = new Smarty();
         $data['user'] = $this->request->user ? $this->request->user->object : NULL;
         $data['request'] = $this->request;
+        $smarty->escape_html = true;
         $smarty->assign('data', $data);
         return $smarty->fetch('./templates/' . $tpl);
     }

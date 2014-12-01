@@ -9,7 +9,7 @@ class BaseModel {
     protected $fields;
 
     function __construct($data=null) {
-        $mongodb = new MongoClient();
+        $mongodb = new MongoClient(DB_CONN, array('username' => DB_USER, 'password' => DB_PASS));
         $this->db = $mongodb->selectDB(DB_NAME)->selectCollection($this->collection);
         if ($data) {
             $this->get($data);
